@@ -1,0 +1,86 @@
+body {
+    font-size:      100%;
+    font-family:    Arial,Helvetica,sans-serif;
+    max-width:      855px;
+    background:     #F0F0F0;
+    margin:         auto;
+}
+
+header, footer {
+    padding:        20px;
+    background:     #aaa;
+}
+
+main {
+    padding:        10px;
+}
+
+footer {
+    margin-top:     20px;
+    clear:          both;
+}
+
+iframe {
+    border:         1px solid #555;
+    box-shadow:     3px 2px 5px #555;
+
+}
+
+#controls {
+    margin:         auto;
+    float:          left;
+    overflow:       auto;
+    padding-right:  20px;
+}
+
+#selectText {
+    margin:         0;
+    font-size:     11px;
+    display:       inline-block;
+    padding-right: 6px;
+}
+
+#playGrid {
+    width:  570px;
+    float:  right;
+}
+
+#videoPlayer {
+    padding-top:    20px;
+}
+
+.box {
+    font-family:    'McLaren', cursive;
+    padding:        20px 8px 0 8px;
+    font-size:      13px;
+    color:          #fcc;
+    text-align:     center;
+    user-select:    none;
+    display:        inline-block;
+    border:         2px solid #888;
+    width:          100px;
+    height:         100px;
+    margin:         4px 5px;
+    box-shadow:     3px 2px 5px #333;
+    border-radius:  12px;
+    background:     #1F66B8;
+    overflow:       hidden;
+    cursor:         crosshair;
+}
+
+.box:hover, .clicked {
+    border:         2px solid #666;
+    box-shadow:     2px 1px 7px #666;
+    transition:     all 0.5s;
+    background:     #1F99f0;
+}
+
+
+.clicked {
+    background: #4BAD1A;
+}
+
+.clicked:hover {
+    background: #5ED124;
+    color:      #ffe;
+}
