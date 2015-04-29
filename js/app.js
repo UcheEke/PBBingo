@@ -1,4 +1,10 @@
-// Functions
+// Globals
+
+var gameVariables = {};
+
+
+// --- FUNCTIONS ---
+//
 
 // YoutubeEmbed
 // Takes a youtube url and embeds it into the game
@@ -183,6 +189,8 @@ var firstPage = function () {
     var $main = $("main");
     $main.empty();
 
+	var $container = $("<div class='container'>");
+
     // Create the container form
     var $form = $('<form>');
     $form.attr("id","page1Form");
@@ -216,6 +224,7 @@ var firstPage = function () {
     // Set the attributes
 	$selGameType.attr({
 		'id' : 'selGameType',
+		'class': 'formField',
 		'form':'page1Form'
 	});
 
@@ -243,6 +252,7 @@ var firstPage = function () {
     // Set the attributes
 	$selGridSize.attr({
 		'id': 'selGridSize',
+		'class':'formField',
 		'form':'page1Form'
 	});
 
@@ -250,7 +260,7 @@ var firstPage = function () {
 		'id' : "lblGridSize",
 		'class': "formText"
 	});
-	$lblGridSize.text("Game Type:")
+	$lblGridSize.text("Grid Size:")
 	options = ["3x3", "4x4"];
 	count = 0;
 	options.forEach(function(option){
@@ -265,9 +275,10 @@ var firstPage = function () {
 	$form.append($formLine);
 
 	// Submit button
-	var $btnSubmit = $("<button>");
+	var $btnSubmit = $("<input>");
 	$btnSubmit.attr({
 		'id': 'btnSubmit',
+		'type': 'button',
 		'class': 'formButton',
 		'type': 'submit',
 		'value': 'Play Game'
@@ -277,8 +288,23 @@ var firstPage = function () {
 	$formLine.append($btnSubmit);
 	$form.append($formLine);
 
-    $main.append($form);
+    $main.append($container.append($form));
+
+	$btnSubmit.on("submit",function () {
+		gameVariables.ytURL = $inputYT.text;
+		gameVariables.gameType = $selGameType.val();
+		gameVariables.gridSize = $selGridSize.val();
+		console.log("game variables: " + gameVariables);
+		playGame();
+	});
 };
+
+var playGame = function() {
+	var $main = $("main");
+	console.log("playing game!!");
+	$main.empty();
+}
+
 
 //
 // --- MAIN FUNCTION ---
@@ -288,7 +314,6 @@ var main = function() {
 	console.log("app.js: Ready");
 
 	firstPage();
-
 }
 
 $(document).ready(main);

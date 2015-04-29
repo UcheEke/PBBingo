@@ -1,0 +1,65 @@
+.container {
+    padding:    30px 45px;
+    margin:     auto;
+    border:     5px solid #003e41;
+    border-radius:  20px;
+}
+
+.formLine {
+    font-family:    'McLaren', cursive;
+    color:          #009198;
+    padding:        0;
+}
+
+.formLine:last-child {
+    margin-top:     30px;
+    background:     #003e41;
+    border-radius:  5px;
+    padding:        20px 15px;
+}
+
+.formText, .formField, .formButton {
+    font-size:       1.4em;
+    display:         inline-block;
+}
+
+.formField  {
+    font-family:    'McLaren';
+    margin-left:    25px;
+    padding:        10px;
+    border:         3px solid #009198;
+    border-radius:  5px;
+}
+
+.formField:hover  {
+    transition:     all 0.5s;
+    border-color:   #003e41;
+    color:          #003e41;
+    background:     #e0e0e0;
+}
+
+#inputYT {
+    width:      380px;
+}
+
+.formText {
+    padding:        15px;
+    width:          200px;
+    background:     #003e41;
+    border-radius:  5px;
+}
+
+.formButton {
+    margin-left:    auto;
+    margin-right:   auto;
+    font-family:    'McLaren';
+    border:     3px solid #003e41;
+    color:      #009198;
+    background: #003e41;
+    padding:    10px;
+    transition: all 0.3s;
+}
+
+.formButton:hover, .formButton:active {
+    color:  #fff;
+}
