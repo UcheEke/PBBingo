@@ -1,6 +1,7 @@
-#Bullshit Bingo by Uche Eke
+#Political Buzzword Bingo 
+by Uche Eke
 
-Basic web implementation of a Bullshit Bingo app to play solo or with friends
+Basic web implementation of a "Bullshit Bingo" app to play solo or with friends
 primarily aimed at the current UK election cycle, but will be modified to contain buzzwords 
 from the US election trail.
 
