@@ -90,3 +90,179 @@ var randomPhrases = function(size) {
 	}
 	return chosenPhrases;
 }
+
+// isBingo
+// Returns true if Bingo condition has been achieved based upon the game type
+var isBingo = function(gameType, list, size) {
+	switch (gameType) {
+		case 0: // Full House Game
+			return (list.length === size * size);
+			break;
+		case 1: // Simple Line Game
+			return hasLine(list, size);
+			break;
+		default:
+			return false;
+	}
+}
+
+// zeros
+// Creates a list of zeros of length "size"
+var zeros = function(size) {
+	var zeroArray = [];
+	for (var i = 0; i < size; i++) {
+		zeroArray.push(0);
+	}
+
+	return zeroArray;
+}
+
+// range
+// Creates a range from 0 to "size", in integers or strings based on "type"
+var range = function(size, type) {
+	range = [];
+	for (var i = 0; i < size; i++) {
+		range.push(num = (type === 'str') ? i.toString() : i);
+	}
+}
+
+
+// hasLine
+// Returns true if a line (row,column or main diagonals) is completed, false otherwise
+var hasLine = function(list, size) {
+
+	var result = false;
+	// Ensure size is a number
+	size = Number(size);
+
+	// Check Rows and cols in the following lists
+	var rowList = zeros(size);
+	var colList = zeros(size);
+
+	// Check diagonals:
+	// Check the main diagonal:
+	var index = "",
+		diag = [];
+	for (var i = 0; i < size; i++) {
+		index = i.toString() + i.toString();
+		if (list.indexOf(index) !== -1) {
+			diag.push(index);
+		}
+	}
+	if (diag.length === size) {
+		return true;
+	}
+
+	// Reset temporary arrays
+	diag = [];
+
+	// Check the anti-diagonal
+	for (var i = 0, j = size - 1; i < size, j >= 0; i++, j--) {
+		index = j.toString() + i.toString();
+		if (list.indexOf(index) !== -1) {
+			diag.push(index);
+		}
+	}
+	if (diag.length === size) {
+		return true;
+	}
+
+	list.forEach(function(element) {
+		rowList[parseInt(element[0])] += 1;
+		colList[parseInt(element[1])] += 1;
+	});
+
+	console.log("rowList: " + rowList);
+	console.log("colList: " + colList);
+	console.log("size: " + size);
+
+	for (var i = 0; i < size; i++) {
+		console.log(rowList[i], colList[i], size);
+		if (rowList[i] === size) {
+			return true;
+		} else if (colList[i] === size) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+options.forEach(function(option) {
+	$select.append("<option value='" + count + "'>" + option +
+		"</option>");
+	count++;
+});
+
+// Create two divs for game content
+// 1. Controls
+var $selector = $("#selector");
+
+// Add this box to the selector div section
+$selector.append($selectText);
+$selector.append($select);
+
+// 2. playGrid
+// Create a div and fill it with divs of class='box'
+var $playGrid = $("#playGrid");
+
+// Use the select element's onChange method
+$select.on("change", function() {
+	// clear the attached playGrid
+	$playGrid.empty();
+	//isGrid = false;
+
+	// Determine player's grid size selection
+	var numberOfBoxes = ($select.val() > 2) ? $select.val() : 0;
+	var cliches = randomPhrases(numberOfBoxes * numberOfBoxes);
+
+	var $row, $box, $anchor; // Container row and child box variables
+
+	// Create the grid based on the selection
+	for (var row = 0; row < numberOfBoxes; row++) {
+		// Create a container div for each row
+		$row = $("<div class='gridRow'>");
+		for (var col = 0; col < numberOfBoxes; col++) {
+			// Create a box for each column
+			$box = $("<div class='box' id='" + row + col + "'>");
+			// Attach box to current row
+			$row.append($box);
+		}
+		// Attach row to playGrid
+		$playGrid.append($row);
+	}
+
+	$playGrid.on("click", function(e) {
+		// Ensure that the event is a click
+		if (e.type !== "click") return;
+
+		var t = e.target;
+		// DEBUG: console.log(e)
+		if (t.className.indexOf("box") !== -1) {
+			if (t.className.indexOf("clicked") === -1) {
+				t.className += " clicked";
+				t.innerHTML = (cliches.length > 0) ?
+					cliches.pop() : "ERR";
+				cSquares.push(t.id);
+			} else {
+				t.className = t.className.replace(
+					"clicked", "").trim();
+				t.innerHTML = "";
+				cSquares.splice(cSquares.indexOf(t.id),
+					1);
+			}
+			// Check if you have bingo
+			if (isBingo(gameType, cSquares,
+					numberOfBoxes)) {
+				console.log("Bingo!! You've won!!");
+			} else {
+				console.log("cSquares array: " +
+					cSquares);
+				console.log("Bingo? Not yet!");
+			}
+		}
+	});
+});
+};
+
+$(document).ready(main);
