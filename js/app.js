@@ -81,7 +81,7 @@ var randomPhrases = function(size) {
 		"EU referendum",
 		"Our red lines"
 	];
-    
+
 	var chosenPhrases = [];
 	for (var i = 0; i < size; i++) {
 		// Extract a phrase from the phraselist at random
@@ -130,7 +130,7 @@ var hasLine = function(list, size) {
 	}
 	result.push(diag = (diag.length === size) ? diag : []);
     if (diag) result[0] = true;
-    
+
 	// Check the anti-diagonal:
     aDiag = [];
 	for (var i = 0, j = size - 1; i < size, j >= 0; i++, j--) {
@@ -180,13 +180,14 @@ var hasLine = function(list, size) {
 
 // firstPage: Creates form in DOM for the various user defined game parameters
 var firstPage = function () {
-    var $main = $("<main>");
+    var $main = $("main");
     $main.empty();
-    
+
     // Create the container form
     var $form = $('<form>');
     $form.attr("id","page1Form");
-    
+
+	//  YouTube Video input
     // Input field for youtube video
     var $inputYT = $("<input>");
     // Set the attributes
@@ -194,34 +195,100 @@ var firstPage = function () {
         'type' : "text",
         'id' : "inputYT",
         'placeholder' : "Insert link to YouTube video",
+		'class': 'formField',
         'required' : true
     });
-    var $inputYTtext = $("<p>");
-    $inputYTtext.attr({
-        'id' : "inputYTtext",
+    var $lblInputYT = $("<p>");
+    $lblInputYT.attr({
+        'id' : "lblInputYT",
         'class': "formText"
     });
-    $inputYTtext.text("YouTube Video:");
-    
+    $lblInputYT.text("YouTube Video:");
+
     var $formLine = $("<div class='formLine'>");
-    $formLine.append($inputYTtext);
+    $formLine.append($lblInputYT);
     $formLine.append($inputYT);
     $form.append($formLine);
-    
-    $main.append($form);  
+
+	//  Game Type selection box
+    var $selGameType = $("<select>");
+	var $lblGameType = $("<p>")
+    // Set the attributes
+	$selGameType.attr({
+		'id' : 'selGameType',
+		'form':'page1Form'
+	});
+
+	$lblGameType.attr({
+		'id' : "lblGameType",
+		'class': "formText"
+	});
+	$lblGameType.text("Game Type:")
+	var options = ["Line", "Full House"];
+	var count = 0;
+	options.forEach(function(option){
+		$selGameType.append($("<option class='selOptions' value='"+ count +
+		"'>"+ option +"</option>"));
+		count++;
+	});
+
+	$formLine = $("<div class='formLine'>");
+	$formLine.append($lblGameType);
+	$formLine.append($selGameType);
+	$form.append($formLine);
+
+	//  Grid size selection box
+    var $selGridSize = $("<select>");
+	var $lblGridSize = $("<p>")
+    // Set the attributes
+	$selGridSize.attr({
+		'id': 'selGridSize',
+		'form':'page1Form'
+	});
+
+	$lblGridSize.attr({
+		'id' : "lblGridSize",
+		'class': "formText"
+	});
+	$lblGridSize.text("Game Type:")
+	options = ["3x3", "4x4"];
+	count = 0;
+	options.forEach(function(option){
+		$selGridSize.append($("<option class='selOptions' value='"+ count +
+		"'>"+ option +"</option>"));
+		count++;
+	});
+
+	$formLine = $("<div class='formLine'>");
+	$formLine.append($lblGridSize);
+	$formLine.append($selGridSize);
+	$form.append($formLine);
+
+	// Submit button
+	var $btnSubmit = $("<button>");
+	$btnSubmit.attr({
+		'id': 'btnSubmit',
+		'class': 'formButton',
+		'type': 'submit',
+		'value': 'Play Game'
+	});
+
+	$formLine = $("<div class='formLine'>");
+	$formLine.append($btnSubmit);
+	$form.append($formLine);
+
+    $main.append($form);
 };
 
 //
-// --- MAIN FUNCTION --- 
+// --- MAIN FUNCTION ---
 //
 var main = function() {
 	"use strict";
+	console.log("app.js: Ready");
 
-	console.log("hello world from app.js!");
-    
-	var $selectText = $("<p id='selectText'>");
-    $("<main>").append($selectText);
-     
+	firstPage();
+
 }
 
 $(document).ready(main);
