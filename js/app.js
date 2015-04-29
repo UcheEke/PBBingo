@@ -6,7 +6,7 @@ var youtubeEmbed = function(url) {
 	// Youtube urls take two forms
 	// 1. www.youtube.com/watch?v=VidCode <-- from the address bar
 	// 2. youtu.be/VidCode <-- from the share section
-	if (url.indexOf("youtube") === -1) || (url.indexOf("youtu.be") === -1) {
+	if (url.indexOf("youtube") === -1 || url.indexOf("youtu.be") === -1) {
 		throw "Only Youtube video sources are allowed at the moment";
 	} else {
 		var urlElements = url.split("/");
@@ -41,46 +41,47 @@ var randomPhrases = function(size) {
 		"Lower taxes",
 		"Raise taxes",
 		"A wide range of options right across the board",
-		"more money in real terms than any other party",
-		"the dire situation we inherited",
+		"More money in real terms than any other party",
+		"The dire situation we inherited",
 		"Let me be absolutely open and honest",
 		"At the end of the day",
 		"Our message is very clear and very simple",
 		"A whole range of proposals",
-		"the fact of the matter is",
-		"if I can just make this point",
-		"the previous administration",
+		"The fact of the matter is",
+		"If I can just make this point",
+		"The previous administration",
 		"A comprehensive raft of measures",
 		"There are no easy answers",
 		"Black hole in our finances",
 		"Our policy is taken from the bottom up",
 		"No more top down organisation",
 		"Out there in the real world",
-		"puts Britain in the driving seat",
+		"Puts Britain in the driving seat",
 		"In any way, shape or form",
-		"restore the nation's faith in politics",
-		"get Britain working",
-		"protect the middle class",
-		"cost of living crisis",
-		"the squeezed middle",
-		"ahead of the curve",
-		"enemies of enterprise",
-		"alarm clock Britain",
-		"feeling the pinch",
-		"tough decisions",
-		"tightening our belts",
-		"we're all in it together",
+		"Restore the nation's faith in politics",
+		"Get Britain working",
+		"Protect the middle class",
+		"Cost of living crisis",
+		"The squeezed middle",
+		"Ahead of the curve",
+		"Enemies of enterprise",
+		"Alarm clock Britain",
+		"Feeling the pinch",
+		"Tough decisions",
+		"Tightening our belts",
+		"We're all in it together",
 		"British values",
-		"change that will make a difference",
-		"opened the floodgates",
-		"everyone is proud",
-		"those finding it hard to get by",
-		"better opportunities",
+		"Change that will make a difference",
+		"Opened the floodgates",
+		"Everyone is proud",
+		"Those finding it hard to get by",
+		"Better opportunities",
 		"And so I say this",
-		"clean up the mess left by the last government",
+		"Clean up the mess left by the last government",
 		"EU referendum",
-		"red lines"
+		"Our red lines"
 	];
+    
 	var chosenPhrases = [];
 	for (var i = 0; i < size; i++) {
 		// Extract a phrase from the phraselist at random
@@ -106,40 +107,18 @@ var isBingo = function(gameType, list, size) {
 	}
 }
 
-// zeros
-// Creates a list of zeros of length "size"
-var zeros = function(size) {
-	var zeroArray = [];
-	for (var i = 0; i < size; i++) {
-		zeroArray.push(0);
-	}
-
-	return zeroArray;
-}
-
-// range
-// Creates a range from 0 to "size", in integers or strings based on "type"
-var range = function(size, type) {
-	range = [];
-	for (var i = 0; i < size; i++) {
-		range.push(num = (type === 'str') ? i.toString() : i);
-	}
-}
-
-
-// hasLine
-// Returns true if a line (row,column or main diagonals) is completed, false otherwise
+// hasLine(list, size)
+// Takes in a list of checked grid squares and the full grid side length, size.
+// Returns an array "result". result[0] is true if a line is found, result[1:]
+// contain arrays of the indices of checked grid squares that comprise each
+// winning line
 var hasLine = function(list, size) {
 
-	var result = false;
+	var result = [false];
+
 	// Ensure size is a number
 	size = Number(size);
 
-	// Check Rows and cols in the following lists
-	var rowList = zeros(size);
-	var colList = zeros(size);
-
-	// Check diagonals:
 	// Check the main diagonal:
 	var index = "",
 		diag = [];
@@ -149,120 +128,100 @@ var hasLine = function(list, size) {
 			diag.push(index);
 		}
 	}
-	if (diag.length === size) {
-		return true;
-	}
-
-	// Reset temporary arrays
-	diag = [];
-
-	// Check the anti-diagonal
+	result.push(diag = (diag.length === size) ? diag : []);
+    if (diag) result[0] = true;
+    
+	// Check the anti-diagonal:
+    aDiag = [];
 	for (var i = 0, j = size - 1; i < size, j >= 0; i++, j--) {
 		index = j.toString() + i.toString();
 		if (list.indexOf(index) !== -1) {
-			diag.push(index);
+			aDiag.push(index);
 		}
 	}
-	if (diag.length === size) {
-		return true;
-	}
+    result.push(aDiag = (aDiag.length === size) ? aDiag : []);
+    if (aDiag) result[0] = true;
 
-	list.forEach(function(element) {
-		rowList[parseInt(element[0])] += 1;
-		colList[parseInt(element[1])] += 1;
-	});
+    // Check the rows
+    var row = [];
+    // Scan the matrix
+    for (var i=0;i < size; i++) {
+        for (var j=0; j < size; j++) {
+            index = i.toString() + j.toString();
+            if (list.indexOf(index) !== -1) {
+                row.push(index);
+            }
+        }
+        result.push(row = (row.length === size) ? row : []);
+        if (row) {
+            result[0] = true;
+            break;
+        }
+    }
 
-	console.log("rowList: " + rowList);
-	console.log("colList: " + colList);
-	console.log("size: " + size);
+    // Check the columns
+    var col = [];
+    for (var i = 0; i < size; i++) {
+        for (var j = 0; j < size; j++) {
+            index = j.toString() + i.toString();
+            if (list.indexOf(index) !== -1) {
+                col.push(index);
+            }
+        }
+        result.push(col = (col.length === size) ? col : []);
+        if (col){
+            result[0] = true;
+            break;
+        }
+    }
 
-	for (var i = 0; i < size; i++) {
-		console.log(rowList[i], colList[i], size);
-		if (rowList[i] === size) {
-			return true;
-		} else if (colList[i] === size) {
-			return true;
-		}
-	}
-
-	return false;
+    return result;
 }
 
-options.forEach(function(option) {
-	$select.append("<option value='" + count + "'>" + option +
-		"</option>");
-	count++;
-});
-
-// Create two divs for game content
-// 1. Controls
-var $selector = $("#selector");
-
-// Add this box to the selector div section
-$selector.append($selectText);
-$selector.append($select);
-
-// 2. playGrid
-// Create a div and fill it with divs of class='box'
-var $playGrid = $("#playGrid");
-
-// Use the select element's onChange method
-$select.on("change", function() {
-	// clear the attached playGrid
-	$playGrid.empty();
-	//isGrid = false;
-
-	// Determine player's grid size selection
-	var numberOfBoxes = ($select.val() > 2) ? $select.val() : 0;
-	var cliches = randomPhrases(numberOfBoxes * numberOfBoxes);
-
-	var $row, $box, $anchor; // Container row and child box variables
-
-	// Create the grid based on the selection
-	for (var row = 0; row < numberOfBoxes; row++) {
-		// Create a container div for each row
-		$row = $("<div class='gridRow'>");
-		for (var col = 0; col < numberOfBoxes; col++) {
-			// Create a box for each column
-			$box = $("<div class='box' id='" + row + col + "'>");
-			// Attach box to current row
-			$row.append($box);
-		}
-		// Attach row to playGrid
-		$playGrid.append($row);
-	}
-
-	$playGrid.on("click", function(e) {
-		// Ensure that the event is a click
-		if (e.type !== "click") return;
-
-		var t = e.target;
-		// DEBUG: console.log(e)
-		if (t.className.indexOf("box") !== -1) {
-			if (t.className.indexOf("clicked") === -1) {
-				t.className += " clicked";
-				t.innerHTML = (cliches.length > 0) ?
-					cliches.pop() : "ERR";
-				cSquares.push(t.id);
-			} else {
-				t.className = t.className.replace(
-					"clicked", "").trim();
-				t.innerHTML = "";
-				cSquares.splice(cSquares.indexOf(t.id),
-					1);
-			}
-			// Check if you have bingo
-			if (isBingo(gameType, cSquares,
-					numberOfBoxes)) {
-				console.log("Bingo!! You've won!!");
-			} else {
-				console.log("cSquares array: " +
-					cSquares);
-				console.log("Bingo? Not yet!");
-			}
-		}
-	});
-});
+// firstPage: Creates form in DOM for the various user defined game parameters
+var firstPage = function () {
+    var $main = $("<main>");
+    $main.empty();
+    
+    // Create the container form
+    var $form = $('<form>');
+    $form.attr("id","page1Form");
+    
+    // Input field for youtube video
+    var $inputYT = $("<input>");
+    // Set the attributes
+    $inputYT.attr({
+        'type' : "text",
+        'id' : "inputYT",
+        'placeholder' : "Insert link to YouTube video",
+        'required' : true
+    });
+    var $inputYTtext = $("<p>");
+    $inputYTtext.attr({
+        'id' : "inputYTtext",
+        'class': "formText"
+    });
+    $inputYTtext.text("YouTube Video:");
+    
+    var $formLine = $("<div class='formLine'>");
+    $formLine.append($inputYTtext);
+    $formLine.append($inputYT);
+    $form.append($formLine);
+    
+    $main.append($form);  
 };
+
+//
+// --- MAIN FUNCTION --- 
+//
+var main = function() {
+	"use strict";
+
+	console.log("hello world from app.js!");
+    
+	var $selectText = $("<p id='selectText'>");
+    $("<main>").append($selectText);
+     
+}
 
 $(document).ready(main);
