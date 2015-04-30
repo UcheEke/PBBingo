@@ -1,15 +1,20 @@
+// Globals
+// Game data is an object that pulls the data from the form
+var GameData = {
+    "YouTubeVideo": "",     // Default: demo
+    "gridSize":	'3',	    // 3x3 grid by default
+    "gameType":	'0',        // Line by default
+    "lines" : []            // winning lines in line game
+};
 
 
 // --- FUNCTIONS ---
-//
-
 // hasYouTube
 // Takes a youtube url and embeds it into the game
-var hasYouTube = function(url,GameData) {
+var hasYouTube = function(url) {
 	// Youtube urls take two forms
 	// 1. www.youtube.com/watch?v=VidCode <-- from the address bar
 	// 2. youtu.be/VidCode <-- from the share section
-	console.log(url.indexOf("youtube"));
 	if (url.indexOf("youtube") !== -1 || url.indexOf("youtu.be") !== -1) {
 		var urlElements = url.split("/");
 		// Take the last element
@@ -18,7 +23,6 @@ var hasYouTube = function(url,GameData) {
 		if (keyElement.indexOf("watch?v=") !== -1) {
 			keyElement = keyElement.replace("watch?v=", "");
 		}
-		// Concatenate the embed url with the vidCode and apply to the src attribute of the iframe
 		GameData.YouTubeVideo = keyElement;
 		return true;
 	}
@@ -28,7 +32,6 @@ var hasYouTube = function(url,GameData) {
 // Random phrases
 // Selects 16 unique phrases from the phrases list and returns a new list
 var randomPhrases = function(size) {
-
 	var phrases = [
 		"Let me be absolutely clear",
 		"There is no instant solution",
@@ -43,7 +46,7 @@ var randomPhrases = function(size) {
 		"The real question is this",
 		"Lower taxes",
 		"Raise taxes",
-		"A wide range of options right across the board",
+		"Wide range of options right across the board",
 		"More money in real terms",
 		"The dire situation we inherited",
 		"Let me be absolutely open and honest",
@@ -62,7 +65,7 @@ var randomPhrases = function(size) {
 		"The previous administration",
         "We'll turn the tide",
         "A wasted vote",
-		"A comprehensive raft of measures",
+		"Comprehensive raft of measures",
 		"There are no easy answers",
 		"Black hole in our finances",
 		"Our policy is taken from the bottom up",
@@ -102,22 +105,26 @@ var randomPhrases = function(size) {
 		phrases.splice(index, 1);
 	}
 	return chosenPhrases;
-}
+};
 
 // isBingo
 // Returns true if Bingo condition has been achieved based upon the game type
 var isBingo = function(gameType, list, size) {
-	switch (gameType) {
-		case 0: // Full House Game
-			return (list.length === size * size);
-			break;
-		case 1: // Simple Line Game
+    console.log("Type of gameType: " + (typeof gameType));
+    switch (gameType) {
+		case '0': // Line Game
+            console.log("Line Game Test");
 			return hasLine(list, size);
 			break;
+		case '1': // Full House Game
+            console.log("Full Game Test");
+			return (list.length === size * size);
+			break;
 		default:
+            console.log("Default test");
 			return false;
 	}
-}
+};
 
 // hasLine(list, size)
 // Takes in a list of checked grid squares and the full grid side length, size.
@@ -125,12 +132,10 @@ var isBingo = function(gameType, list, size) {
 // contain arrays of the indices of checked grid squares that comprise each
 // winning line
 var hasLine = function(list, size) {
-
 	var result = [false];
-
 	// Ensure size is a number
 	size = Number(size);
-
+    
 	// Check the main diagonal:
 	var index = "",
 		diag = [];
@@ -140,10 +145,14 @@ var hasLine = function(list, size) {
 			diag.push(index);
 		}
 	}
-	result.push(diag = (diag.length === size) ? diag : []);
-    if (diag) result[0] = true;
+    if (diag.length === size) {
+        result.push(diag);
+        result[0] = true;
+    } else {
+        result.push([]);
+    }
 
-	// Check the anti-diagonal:
+    // Check the anti-diagonal:
     aDiag = [];
 	for (var i = 0, j = size - 1; i < size, j >= 0; i++, j--) {
 		index = j.toString() + i.toString();
@@ -151,55 +160,63 @@ var hasLine = function(list, size) {
 			aDiag.push(index);
 		}
 	}
-    result.push(aDiag = (aDiag.length === size) ? aDiag : []);
-    if (aDiag) result[0] = true;
+    if (aDiag.length === size) {
+        result.push(aDiag);
+        result[0] = true;
+    } else {
+        result.push([]);
+    }
 
-    // Check the rows
+    // Check the rows and cols
+    var rowList = [0,0,0,0];
+    var colList = [0,0,0,0];
+    list.forEach(function(element){
+        rowList[parseInt(element.charAt(0))] += 1;
+        colList[parseInt(element.charAt(1))] += 1;
+    });
+    
     var row = [];
-    // Scan the matrix
-    for (var i=0;i < size; i++) {
-        for (var j=0; j < size; j++) {
-            index = i.toString() + j.toString();
-            if (list.indexOf(index) !== -1) {
-                row.push(index);
+    for (var i = 0; i < size; i++){
+        if (rowList[i] === size) {
+            result[0]  = true;
+            for (var j = 0; j < size; j++){
+                row.push(i.toString() + j.toString());
             }
         }
-        result.push(row = (row.length === size) ? row : []);
-        if (row) {
-            result[0] = true;
-            break;
-        }
     }
-
-    // Check the columns
+    
+    result.push(row);
+    
     var col = [];
-    for (var i = 0; i < size; i++) {
-        for (var j = 0; j < size; j++) {
-            index = j.toString() + i.toString();
-            if (list.indexOf(index) !== -1) {
-                col.push(index);
+    for (var i = 0; i < size; i++){
+        if (colList[i] === size) {
+            result[0]  = true;
+            for (var j = 0; j < size; j++){
+                col.push(j.toString() + i.toString());
             }
         }
-        result.push(col = (col.length === size) ? col : []);
-        if (col){
-            result[0] = true;
-            break;
-        }
     }
-    return result;
-}
+    
+    result.push(col);
 
-// firstPage: Creates form in DOM for the various user defined game parameters
-var firstPage = function () {
+    
+    
+    if (result[0] === true){
+        GameData.lines = result.slice(1);
+        console.log(GameData.lines);
+        return true;
+    } else {
+        GameData.lines = [];
+        return false;
+    }
+};
+
+// initialPage: Creates form in DOM for the various user defined game parameters
+var initialPage = function () {
     var $main = $("main");
     $main.empty();
-
-	// Game data is an object that pulls the data from the form
-	var GameData = {
-			"YouTubeVideo": "gGnOHiqgZ1k",  // Default: demo
-			"gridSize":	'3',				// 3x3 grid by default
-			"gameType":	'0'     			// Line by default
-	};
+    
+    var finished = false;
 
 	var $container = $("<div class='container'>");
 
@@ -303,12 +320,12 @@ var firstPage = function () {
     $main.append($container.append($form));
 
 	$btnSubmit.click(function(evt){
-		if (hasYouTube($('#inputYT').val(),GameData)) {
+		if (hasYouTube($('#inputYT').val())) {
 			evt.preventDefault();
-			$main.fadeOut();
 			GameData.gameType = $selGameType.val();
 			GameData.gridSize = $selGridSize.val();
-			startGame(GameData);
+            $main.hide();
+            setupGame();
 		} else {
 			$inputYT.css("border-color","red");
 			$lblInputYT.text("Please enter YouTube Video link:");
@@ -318,7 +335,7 @@ var firstPage = function () {
 	});
 };
 
-var setupGame = function (GameData) {
+var setupGame = function () {
     var $main = $("main");
 	$main.empty();
     
@@ -363,13 +380,42 @@ var setupGame = function (GameData) {
     
     $gameContainer.append($playGrid);
     $main.append($gameContainer);
-    $main.fadeIn();
+    $main.show();
+    startGame();
 };
 
-var startGame = function (GameData) {
-    setupGame(GameData);
+var startGame = function () {
+    var $playGrid = $("#playGrid");
+    var cSquares = [];
+    var gameType = GameData.gameType;
+    var gridSize = GameData.gridSize;
+    
+    //console.log("Game Type: " + gameType);
+    //console.log("Grid Size: " + gridSize);
+    
+    $playGrid.on("click", function(e) {
+        // Ensure that the event is a click
+        if (e.type !== "click") return;
+        
+        var t = e.target;
+        if (t.className.indexOf("box") !== -1) {
+            if (t.className.indexOf("clicked") === -1) {
+                t.className += " clicked";
+                cSquares.push(t.id);
+            } else {
+                t.className = t.className.replace(
+                    "clicked", "").trim();
+                cSquares.splice(cSquares.indexOf(t.id),1);
+            }
+            // Check if you have bingo
+            if (isBingo(gameType, cSquares,gridSize)) {
+                console.log("Bingo!! You've won!!");
+            } else {
+                console.log("Bingo? Not yet!");
+            }
+        }
+    });
 }
-
 
 //
 // --- MAIN FUNCTION ---
@@ -377,6 +423,7 @@ var startGame = function (GameData) {
 var main = function() {
 	"use strict";
 	console.log("app.js: Ready");
-	firstPage();
-}
+    initialPage();
+};
+
 $(document).ready(main);

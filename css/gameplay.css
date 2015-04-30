@@ -71,9 +71,10 @@ iframe {
 
 .clicked {
     background: #4BAD1A;
+    color:      #041417;
 }
 
 .clicked:hover {
     background: #5ED124;
-    color:      #ffe;
+    color:      #000;
 }

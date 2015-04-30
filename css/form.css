@@ -7,7 +7,7 @@
 
 .formLine {
     font-family:    'McLaren', cursive;
-    color:          #009198;
+    color:          #005a6f;
     padding:        0;
 }
 
@@ -27,7 +27,7 @@
     font-family:    'McLaren';
     margin-left:    25px;
     padding:        10px;
-    border:         3px solid #009198;
+    border:         3px solid #005a6f;
     border-radius:  5px;
 }
 
