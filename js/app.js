@@ -1,20 +1,16 @@
-// Globals
-
-var gameVariables = {};
 
 
 // --- FUNCTIONS ---
 //
 
-// YoutubeEmbed
+// hasYouTube
 // Takes a youtube url and embeds it into the game
-var youtubeEmbed = function(url) {
+var hasYouTube = function(url,GameData) {
 	// Youtube urls take two forms
 	// 1. www.youtube.com/watch?v=VidCode <-- from the address bar
 	// 2. youtu.be/VidCode <-- from the share section
-	if (url.indexOf("youtube") === -1 || url.indexOf("youtu.be") === -1) {
-		throw "Only Youtube video sources are allowed at the moment";
-	} else {
+	console.log(url.indexOf("youtube"));
+	if (url.indexOf("youtube") !== -1 || url.indexOf("youtu.be") !== -1) {
 		var urlElements = url.split("/");
 		// Take the last element
 		var keyElement = urlElements.pop();
@@ -23,10 +19,10 @@ var youtubeEmbed = function(url) {
 			keyElement = keyElement.replace("watch?v=", "");
 		}
 		// Concatenate the embed url with the vidCode and apply to the src attribute of the iframe
-		keyElement = "https://www.youtube.com/embed/" + keyElement;
-		var $iframe = $("#videoPlayer iframe");
-		$iframe.src = keyElement;
+		GameData.YouTubeVideo = keyElement;
+		return true;
 	}
+	return false;
 }
 
 // Random phrases
@@ -180,7 +176,6 @@ var hasLine = function(list, size) {
             break;
         }
     }
-
     return result;
 }
 
@@ -188,6 +183,13 @@ var hasLine = function(list, size) {
 var firstPage = function () {
     var $main = $("main");
     $main.empty();
+
+	// Game data is an object that pulls the data from the form
+	var GameData = {
+			"YouTubeVideo": "gGnOHiqgZ1k",  // Default: demo
+			"gridSize":	'3',				// 3x3 grid by default
+			"gameType":	'0'     			// Line by default
+	};
 
 	var $container = $("<div class='container'>");
 
@@ -233,8 +235,8 @@ var firstPage = function () {
 		'class': "formText"
 	});
 	$lblGameType.text("Game Type:")
-	var options = ["Line", "Full House"];
-	var count = 0;
+	var options = ["","Line", "Full House"];
+	var count = -1;
 	options.forEach(function(option){
 		$selGameType.append($("<option class='selOptions' value='"+ count +
 		"'>"+ option +"</option>"));
@@ -261,8 +263,8 @@ var firstPage = function () {
 		'class': "formText"
 	});
 	$lblGridSize.text("Grid Size:")
-	options = ["3x3", "4x4"];
-	count = 0;
+	options = ["","3x3", "4x4"];
+	count = 2;
 	options.forEach(function(option){
 		$selGridSize.append($("<option class='selOptions' value='"+ count +
 		"'>"+ option +"</option>"));
@@ -277,10 +279,10 @@ var firstPage = function () {
 	// Submit button
 	var $btnSubmit = $("<input>");
 	$btnSubmit.attr({
-		'id': 'btnSubmit',
-		'type': 'button',
+		'id'   : 'btnSubmit',
+		'type' : 'button',
 		'class': 'formButton',
-		'type': 'submit',
+		'type' : 'submit',
 		'value': 'Play Game'
 	});
 
@@ -290,19 +292,27 @@ var firstPage = function () {
 
     $main.append($container.append($form));
 
-	$btnSubmit.on("submit",function () {
-		gameVariables.ytURL = $inputYT.text;
-		gameVariables.gameType = $selGameType.val();
-		gameVariables.gridSize = $selGridSize.val();
-		console.log("game variables: " + gameVariables);
-		playGame();
+	$btnSubmit.click(function(evt){
+		if (hasYouTube($('#inputYT').val(),GameData)) {
+			evt.preventDefault();
+			$main.fadeOut();
+			GameData.gameType = $selGameType.val();
+			GameData.gridSize = $selGridSize.val();
+			startGame(GameData);
+		} else {
+			$inputYT.css("border-color","red");
+			$lblInputYT.text("Please enter YouTube Video link:");
+			$lblInputYT.css("font-size", "1.2em");
+			return false;
+		}
 	});
 };
 
-var playGame = function() {
+var startGame = function (GameData) {
 	var $main = $("main");
-	console.log("playing game!!");
 	$main.empty();
+    setupGame(GameData);
+    
 }
 
 
@@ -312,8 +322,6 @@ var playGame = function() {
 var main = function() {
 	"use strict";
 	console.log("app.js: Ready");
-
 	firstPage();
 }
-
 $(document).ready(main);
