@@ -1,58 +1,73 @@
-iframe {
-    border:         1px solid #555;
-    box-shadow:     3px 2px 5px #555;
-
+/* Control Grid Styling */
+#gameContainer {
+    background: #c0c0c0;
+    border:     5px solid #041417;
+    border-radius: 20px;
+    margin: auto;
+    width: auto;
+    overflow: hidden;
 }
 
 #controls {
     margin:         auto;
     float:          left;
     overflow:       auto;
-    padding-right:  20px;
-}
-
-#selectText {
-    margin:         0;
-    font-size:     11px;
-    display:       inline-block;
-    padding-right: 6px;
-}
-
-#playGrid {
-    width:  570px;
-    float:  right;
+    padding:        15px;
 }
 
 #videoPlayer {
-    padding-top:    20px;
+    padding-top:    6px;
+    padding-left:   10px;
+}
+
+iframe {
+    border:         2px solid #000;
+    border-radius:  5px;
+    box-shadow:     3px 2px 5px #222;
+}
+
+/*  PlayGrid Styling */
+#playGrid {
+    width:  570px;
+    float:  right;
+    padding: 15px;
+    margin: auto;
+}
+
+.gridRow {
+    width: inherit;
+    padding: 0 0 0 40px;
+    margin: auto;
 }
 
 .box {
     font-family:    'McLaren', cursive;
     padding:        20px 8px 0 8px;
-    font-size:      13px;
-    color:          #fcc;
+    font-size:      0.85em;
+    color:          #00b8e3;
     text-align:     center;
-    user-select:    none;
     display:        inline-block;
     border:         2px solid #888;
     width:          100px;
     height:         100px;
     margin:         4px 5px;
-    box-shadow:     3px 2px 5px #333;
+    box-shadow:     3px 2px 4px #222;
     border-radius:  12px;
-    background:     #1F66B8;
+    background:     #041417;
     overflow:       hidden;
     cursor:         crosshair;
 }
 
 .box:hover, .clicked {
-    border:         2px solid #222;
-    box-shadow:     2px 1px 7px #666;
-    transition:     all 0.5s;
-    background:     #1F99f0;
+    border:         2px solid #000;
+    box-shadow:     2px 1px 2px #111;
+    transition:     all 0.3s;
 }
 
+.box:hover {
+    color:  #fff;
+    background:     #005a6f;    
+}
 
 .clicked {
     background: #4BAD1A;

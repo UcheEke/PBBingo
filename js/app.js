@@ -30,10 +30,11 @@ var hasYouTube = function(url,GameData) {
 var randomPhrases = function(size) {
 
 	var phrases = [
-		"Let me be clear",
+		"Let me be absolutely clear",
 		"There is no instant solution",
 		"It's going to take time",
 		"Hard working families",
+        "Cut our spending",
 		"Up and down the country",
 		"Long term economic plans",
 		"Economic mess",
@@ -43,20 +44,29 @@ var randomPhrases = function(size) {
 		"Lower taxes",
 		"Raise taxes",
 		"A wide range of options right across the board",
-		"More money in real terms than any other party",
+		"More money in real terms",
 		"The dire situation we inherited",
 		"Let me be absolutely open and honest",
+        "Back to basics",
+        "Moving forward",
+        "Return to growth",
+        "Jobs engine",
+        "The envy of the world",
+        "Sink or swim",
 		"At the end of the day",
 		"Our message is very clear and very simple",
 		"A whole range of proposals",
 		"The fact of the matter is",
+        "The politics of fear",
 		"If I can just make this point",
 		"The previous administration",
+        "We'll turn the tide",
+        "A wasted vote",
 		"A comprehensive raft of measures",
 		"There are no easy answers",
 		"Black hole in our finances",
 		"Our policy is taken from the bottom up",
-		"No more top down organisation",
+		"No more top down re-organisation",
 		"Out there in the real world",
 		"Puts Britain in the driving seat",
 		"In any way, shape or form",
@@ -79,7 +89,7 @@ var randomPhrases = function(size) {
 		"Those finding it hard to get by",
 		"Better opportunities",
 		"And so I say this",
-		"Clean up the mess left by the last government",
+		"The mess left by the last government",
 		"EU referendum",
 		"Our red lines"
 	];
@@ -308,11 +318,56 @@ var firstPage = function () {
 	});
 };
 
-var startGame = function (GameData) {
-	var $main = $("main");
+var setupGame = function (GameData) {
+    var $main = $("main");
 	$main.empty();
-    setupGame(GameData);
     
+    // Create two divs for game content
+	// 1. Video view
+    var $controls = $("<div id='controls'>");
+    var $videoPlayer = $("<div id='videoPlayer'>");
+    var $iframe = $("<iframe>");
+    $iframe.attr({
+        "width":"224",
+        "height":"126",
+        "src" : "https://www.youtube.com/embed/" + GameData.YouTubeVideo,
+        "frameborder":'0'
+    });
+    
+    var $gameContainer = $("<div id='gameContainer'>");
+    $videoPlayer.append($iframe);
+    $controls.append($videoPlayer);
+    $gameContainer.append($controls);
+    
+    // 2. playGrid: where the game takes place
+    var $playGrid = $("<div id='playGrid'>");
+    
+    // Determine player's grid size selection
+    var numberOfBoxes = GameData.gridSize;
+    var cliches = randomPhrases(numberOfBoxes * numberOfBoxes);
+    var $row, $box; // Container row and child box variables
+    // Create the grid based on the selection
+    for (var row = 0; row < numberOfBoxes; row++) {
+        // Create a container div for each row
+        $row = $("<div class='gridRow'>");
+        for (var col = 0; col < numberOfBoxes; col++) {
+            // Create a box for each column
+            $box = $("<div class='box' id='" + row + col + "'>");
+            $box.text(cliches.pop());
+            // Attach box to current row
+            $row.append($box);
+        }
+        // Attach row to playGrid
+        $playGrid.append($row);
+    }
+    
+    $gameContainer.append($playGrid);
+    $main.append($gameContainer);
+    $main.fadeIn();
+};
+
+var startGame = function (GameData) {
+    setupGame(GameData);
 }
 
 

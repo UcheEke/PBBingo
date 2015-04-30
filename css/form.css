@@ -1,7 +1,7 @@
 .container {
     padding:    30px 45px;
     margin:     auto;
-    border:     5px solid #003e41;
+    border:     5px solid #041417;
     border-radius:  20px;
 }
 
@@ -13,7 +13,7 @@
 
 .formLine:last-child {
     margin-top:     30px;
-    background:     #003e41;
+    background:     #041417;
     border-radius:  5px;
     padding:        20px 15px;
 }
@@ -33,8 +33,8 @@
 
 .formField:hover  {
     transition:     all 0.5s;
-    border-color:   #003e41;
-    color:          #003e41;
+    border-color:   #041417;
+    color:          #041417;
     background:     #e0e0e0;
 }
 
@@ -45,7 +45,7 @@
 .formText {
     padding:        15px;
     width:          200px;
-    background:     #003e41;
+    background:     #041417;
     border-radius:  5px;
 }
 
@@ -54,12 +54,13 @@
     margin-right:   auto;
     font-family:    'McLaren';
     border:     3px solid #003e41;
-    color:      #009198;
     background: #003e41;
     padding:    10px;
     transition: all 0.3s;
+    color: #041417;
 }
 
 .formButton:hover, .formButton:active {
     color:  #fff;
+    background: #014b5d;
 }
