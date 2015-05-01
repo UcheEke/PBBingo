@@ -15,3 +15,10 @@ Basic web implementation of a "Buzzword Bingo" game primarily aimed at the curre
 - 3x3 grid
 
 
+#### Things to work on
+
+- Improve animations with jQuery to circumvent cross browser issues
+- Split large files into smaller, more manageable units
+- Add options for various buzzword categories
+- Streamline logic
+- Improve design
