@@ -78,3 +78,70 @@ iframe {
     background: #5ED124;
     color:      #000;
 }
+
+@keyframes flashingGold {
+    from {
+        background:     #ffc014;
+        color:          #ffc014;
+        box-shadow:     2px 1px 2px #111;
+        border:         2px solid #000;
+    }
+    to {
+        background:     #c0c0c0;
+        color:          #c0c0c0;
+        box-shadow:     2px 1px 2px #c0c0c0;
+    }
+}
+
+@keyframes flashingBlack {
+    0% {color:black;}
+    25% {color: goldenrod;}
+    50% {color: crimson;}
+    75% {color: darkgoldenrod;}
+    100% {color: firebrick;}
+}
+
+@keyframes fading {
+    from {
+        
+    }
+    to {
+        color:          #c0c0c0;
+        text-shadow:    none;
+    }
+}
+
+.bingo {
+    background:     #c0c0c0;
+    color:          #c0c0c0;
+    box-shadow:     2px 1px 2px #c0c0c0;
+    border:         2px solid #c0c0c0;
+    animation-name: flashingGold;
+    animation-duration: 0.2s;
+    animation-iteration-count: 10;
+    animation-fill-mode: forwards;
+}
+
+.bingo:hover {
+    cursor:         default;
+    background:     #c0c0c0;
+    color:          #c0c0c0;
+    box-shadow:     2px 1px 2px #c0c0c0;
+    border:         2px solid #c0c0c0;
+}
+
+.bigmessage {
+    font-family: 'McLaren';
+    text-shadow:    2px 1px 2px #111;
+    color:          black;
+    font-size:      2.5em;
+    animation-name: flashingBlack;
+    animation-duration: 0.5s;
+    animation-iteration-count: 6;
+    animation-fill-mode: backwards;
+}
+
+.faders {
+    animation: fading 1s;
+    animation-fill-mode: forwards;
+}

@@ -1,10 +1,10 @@
 // Globals
 // Game data is an object that pulls the data from the form
 var GameData = {
-    "YouTubeVideo": "",     // Default: demo
-    "gridSize":	'3',	    // 3x3 grid by default
-    "gameType":	'0',        // Line by default
-    "lines" : []            // winning lines in line game
+    "YouTubeVideo": "", // Default: demo
+    "gridSize":	'',	    // 3x3 grid by default
+    "gameType":	'',     // Line by default
+    "lines" : []        // winning lines in line game
 };
 
 
@@ -110,18 +110,14 @@ var randomPhrases = function(size) {
 // isBingo
 // Returns true if Bingo condition has been achieved based upon the game type
 var isBingo = function(gameType, list, size) {
-    console.log("Type of gameType: " + (typeof gameType));
     switch (gameType) {
 		case '0': // Line Game
-            console.log("Line Game Test");
 			return hasLine(list, size);
 			break;
 		case '1': // Full House Game
-            console.log("Full Game Test");
 			return (list.length === size * size);
 			break;
 		default:
-            console.log("Default test");
 			return false;
 	}
 };
@@ -203,7 +199,6 @@ var hasLine = function(list, size) {
     
     if (result[0] === true){
         GameData.lines = result.slice(1);
-        console.log(GameData.lines);
         return true;
     } else {
         GameData.lines = [];
@@ -322,8 +317,8 @@ var initialPage = function () {
 	$btnSubmit.click(function(evt){
 		if (hasYouTube($('#inputYT').val())) {
 			evt.preventDefault();
-			GameData.gameType = $selGameType.val();
-			GameData.gridSize = $selGridSize.val();
+			GameData.gameType = ($selGameType.val() > '-1') ? $selGameType.val() : '0';
+			GameData.gridSize = ($selGridSize.val() > '2') ? $selGridSize.val() : '3';
             $main.hide();
             setupGame();
 		} else {
@@ -390,9 +385,6 @@ var startGame = function () {
     var gameType = GameData.gameType;
     var gridSize = GameData.gridSize;
     
-    //console.log("Game Type: " + gameType);
-    //console.log("Grid Size: " + gridSize);
-    
     $playGrid.on("click", function(e) {
         // Ensure that the event is a click
         if (e.type !== "click") return;
@@ -409,12 +401,36 @@ var startGame = function () {
             }
             // Check if you have bingo
             if (isBingo(gameType, cSquares,gridSize)) {
-                console.log("Bingo!! You've won!!");
+                console.log("BINGO!");
+                switch (GameData.gameType) {
+                    case '0':
+                        console.log("line(s) found!");
+                        break;
+                    case '1':
+                        $boxes = $(".box");
+                        $boxes.addClass("bingo");
+                        window.setTimeout(function(){
+                            var $playGrid = $("#playGrid");
+                            $playGrid.empty();
+                            var $msg = $("<p class='bigmessage'>FULL HOUSE!!</p>");
+                            $playGrid.append($msg);
+                            },2000);
+                        window.setTimeout(function(){
+                            var $msg = $(".bigmessage");
+                            $msg.addClass("faders");
+                        },3000);
+                        break;
+                }
             } else {
+                console.log("GameData: ", GameData);
                 console.log("Bingo? Not yet!");
             }
         }
     });
+}
+
+var endGame = function () {
+    alert("Finishes game!");
 }
 
 //
