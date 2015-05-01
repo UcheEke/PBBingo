@@ -10,8 +10,8 @@
 }
 
 #controls {
-    margin-top: 30px;
-    margin-left: 30px;
+    margin-top:     20px;
+    margin-left:    15px;
     float:          left;
     padding:        40px 15px;
 }
@@ -94,19 +94,14 @@ iframe {
     100% {color: firebrick;}
 }
 
-@keyframes fading {
+@keyframes fadeToGold {
     from {
         
     }
     to {
-        color:          #c0c0c0;
-        text-shadow:    none;
+        background:     darkgoldenrod;
+        color:          black;
     }
-}
-
-.endGame, .endGame: hover {
-    color:  #041417;
-    background: darkgoldenrod;
 }
 
 .bingo, .bingo:hover {
@@ -132,11 +127,13 @@ iframe {
     line-height:    0.9em;
     animation-name: flashingBlack;
     animation-duration: 0.5s;
-    animation-iteration-count: 6;
+    animation-iteration-count: infinite;
     animation-fill-mode: backwards;
 }
 
-.faders {
-    animation: fading 1s;
+.endGame, .endGame: hover {
+    animation-name:  fadeToGold;
+    animation-duration: 1s;
     animation-fill-mode: forwards;
 }
+

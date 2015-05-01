@@ -103,6 +103,7 @@ var randomPhrases = function(size) {
 		// Extract a phrase from the phraselist at random
 		var index = Math.floor(Math.random() * phrases.length);
 		chosenPhrases.push(phrases[index]);
+        // To ensure unique choices, we remove the last chosen phrase from phrases
 		phrases.splice(index, 1);
 	}
 	return chosenPhrases;
@@ -193,8 +194,6 @@ var hasLine = function(list, size) {
         }
     }
     result.push(col);
-
-    
     
     if (result[0] === true){
         GameData.lines = result.slice(1);
@@ -337,8 +336,8 @@ var setupGame = function () {
     var $videoPlayer = $("<div id='videoPlayer'>");
     var $iframe = $("<iframe>");
     $iframe.attr({
-        "width": (GameData.gridSize === '4') ? "256" : "272" ,
-        "height":(GameData.gridSize === '4') ? "144" : "153" ,
+        "width": (GameData.gridSize === '4') ? "288" : "384" ,
+        "height":(GameData.gridSize === '4') ? "162" : "216" ,
         "src" : "https://www.youtube.com/embed/" + GameData.YouTubeVideo,
         "frameborder":'0'
     });
@@ -383,6 +382,7 @@ var startGame = function () {
     var cSquares = [];
     var gameType = GameData.gameType;
     var gridSize = GameData.gridSize;
+    var gameOver = false;
     
     $playGrid.on("click", function(e) {
         // Ensure that the event is a click
@@ -413,6 +413,7 @@ var startGame = function () {
                                 var unflashLine = function(line){
                                     for (index in line){
                                         var $box = $("#" + line[index]);
+                                        $box.removeClass("clicked");
                                         $box.addClass("endGame")
                                     }
                                 }
@@ -433,23 +434,13 @@ var startGame = function () {
                         $boxes.addClass("bingo");
                         break;
                 }
-                
-                setTimeout(function() {
-                    var $playGrid = $("#playGrid");
-                    var $controls = $("#controls");
-                    var $videoPlayer = $("#videoPlayer");
-                    $videoPlayer.remove();
-                    $playGrid.remove();
-                    $controls.css({"float":"none",
-                                   "margin": 0});},2000);
+                // HACK: Set gridSize outside the range of possible results.
+                gridSize *= 5;
             } 
         }
     });
 }
 
-var endGame = function () {
-    alert("Finishes game!");
-}
 
 //
 // --- MAIN FUNCTION ---
