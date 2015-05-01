@@ -85,7 +85,7 @@ var randomPhrases = function(size) {
 		"Feeling the pinch",
 		"Tough decisions",
 		"Tightening our belts",
-		"We're all in it together",
+		"Job creators",
 		"Uphold British values",
 		"Change that will make a difference",
 		"Opened the floodgates",
@@ -337,8 +337,8 @@ var setupGame = function () {
     var $videoPlayer = $("<div id='videoPlayer'>");
     var $iframe = $("<iframe>");
     $iframe.attr({
-        "width": "224",
-        "height":"126",
+        "width": (GameData.gridSize === '4') ? "256" : "272" ,
+        "height":(GameData.gridSize === '4') ? "144" : "153" ,
         "src" : "https://www.youtube.com/embed/" + GameData.YouTubeVideo,
         "frameborder":'0'
     });
@@ -440,11 +440,9 @@ var startGame = function () {
                     var $videoPlayer = $("#videoPlayer");
                     $videoPlayer.remove();
                     $playGrid.remove();
-                    $controls.css("float","none");},2000);
-            } else {
-                console.log("GameData: ", GameData);
-                console.log("Bingo? Not yet!");
-            }
+                    $controls.css({"float":"none",
+                                   "margin": 0});},2000);
+            } 
         }
     });
 }
