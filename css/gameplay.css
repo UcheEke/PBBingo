@@ -10,10 +10,10 @@
 }
 
 #controls {
-    margin:         auto;
+    margin-top: 30px;
+    margin-left: 30px;
     float:          left;
-    overflow:       auto;
-    padding:        15px;
+    padding:        40px 15px;
 }
 
 iframe {
@@ -23,27 +23,22 @@ iframe {
 }
 
 .controlText {
-    font-size: 0.9em;
     color:  #041417;
-    max-width: 224px;
 }
 
 /*  PlayGrid Styling */
 #playGrid {
     float:  right;
     padding: 15px;
-    margin: auto;
 }
 
 .gridRow {
     width: inherit;
-    padding: 0 0 0 40px;
-    margin: auto;
 }
 
 .box {
     font-family:    'McLaren', cursive;
-    padding:        20px 8px 0 8px;
+    padding:        10px 8px 0 8px;
     font-size:      0.85em;
     color:          #00b8e3;
     text-align:     center;
@@ -133,7 +128,6 @@ iframe {
 .bigMsg {
     font-size:      4.0em;
     line-height:    0.9em;
-    margin:         15px;
     animation-name: flashingBlack;
     animation-duration: 0.5s;
     animation-iteration-count: 6;

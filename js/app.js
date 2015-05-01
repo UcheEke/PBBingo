@@ -68,13 +68,14 @@ var randomPhrases = function(size) {
 		"Comprehensive raft of measures",
 		"There are no easy answers",
 		"Black hole in our finances",
-		"Our policy is taken from the bottom up",
+		"Get off their hobby horses",
 		"No more top down re-organisation",
 		"Out there in the real world",
 		"Puts Britain in the driving seat",
 		"In any way, shape or form",
 		"Restore the nation's faith in politics",
 		"Get Britain working",
+        "Party in complete disarray",
 		"Protect the middle class",
 		"Cost of living crisis",
 		"The squeezed middle",
@@ -85,7 +86,7 @@ var randomPhrases = function(size) {
 		"Tough decisions",
 		"Tightening our belts",
 		"We're all in it together",
-		"British values",
+		"Uphold British values",
 		"Change that will make a difference",
 		"Opened the floodgates",
 		"Everyone is proud",
@@ -180,7 +181,6 @@ var hasLine = function(list, size) {
             }
         }
     }
-    
     result.push(row);
     
     var col = [];
@@ -192,7 +192,6 @@ var hasLine = function(list, size) {
             }
         }
     }
-    
     result.push(col);
 
     
@@ -210,9 +209,7 @@ var hasLine = function(list, size) {
 var initialPage = function () {
     var $main = $("main");
     $main.empty();
-    
     var finished = false;
-
 	var $container = $("<div class='container'>");
 
     // Create the container form
@@ -340,7 +337,7 @@ var setupGame = function () {
     var $videoPlayer = $("<div id='videoPlayer'>");
     var $iframe = $("<iframe>");
     $iframe.attr({
-        "width":"224",
+        "width": "224",
         "height":"126",
         "src" : "https://www.youtube.com/embed/" + GameData.YouTubeVideo,
         "frameborder":'0'
