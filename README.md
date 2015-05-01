@@ -1,7 +1,7 @@
 #Political Buzzword Bingo 
 by Uche Eke
 
-Basic web implementation of a "Buzzword Bingo" game primarily aimed at the current UK election cycle, but will be modified to contain buzzwords from the US election trail.
+Basic web implementation of a "Buzzword Bingo" game primarily aimed at the current UK election cycle, but can easily be modified to contain buzzwords from the US election trail.
 
 ## Proposed Game play
 
