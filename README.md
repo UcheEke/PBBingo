@@ -5,7 +5,7 @@ Basic web implementation of a "Buzzword Bingo" game primarily aimed at the curre
 
 ## Proposed Game play
 
-- Insert political video from YouTube
+- Insert political video from YouTube. (Short, slogan-and-soundbyte-filled election trail videos are recommended)
 - Watch video and check off any buzzwords that have been used within video 
 - Get Bingo (and enjoy the winning feeling that results!!)
 
