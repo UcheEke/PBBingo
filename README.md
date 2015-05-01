@@ -22,3 +22,4 @@ Basic web implementation of a "Buzzword Bingo" game primarily aimed at the curre
 - Add options for various buzzword categories
 - Streamline logic
 - Improve design
+- Add sound Fx
