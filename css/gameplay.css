@@ -6,6 +6,7 @@
     margin: auto;
     width: auto;
     overflow: hidden;
+    justify-content: center;
 }
 
 #controls {
@@ -15,20 +16,20 @@
     padding:        15px;
 }
 
-#videoPlayer {
-    padding-top:    6px;
-    padding-left:   10px;
-}
-
 iframe {
     border:         2px solid #000;
     border-radius:  5px;
     box-shadow:     3px 2px 5px #222;
 }
 
+.controlText {
+    font-size: 0.9em;
+    color:  #041417;
+    max-width: 224px;
+}
+
 /*  PlayGrid Styling */
 #playGrid {
-    width:  570px;
     float:  right;
     padding: 15px;
     margin: auto;
@@ -83,13 +84,10 @@ iframe {
     from {
         background:     #ffc014;
         color:          #ffc014;
-        box-shadow:     2px 1px 2px #111;
-        border:         2px solid #000;
     }
     to {
         background:     #c0c0c0;
-        color:          #c0c0c0;
-        box-shadow:     2px 1px 2px #c0c0c0;
+        color:          #041417;
     }
 }
 
@@ -111,30 +109,31 @@ iframe {
     }
 }
 
-.bingo {
+.endGame, .endGame: hover {
+    color:  #041417;
+    background: darkgoldenrod;
+}
+
+.bingo, .bingo:hover {
     background:     #c0c0c0;
-    color:          #c0c0c0;
-    box-shadow:     2px 1px 2px #c0c0c0;
-    border:         2px solid #c0c0c0;
+    color:          #041417;
     animation-name: flashingGold;
     animation-duration: 0.2s;
     animation-iteration-count: 10;
-    animation-fill-mode: forwards;
+    animation-fill-mode: none;
 }
 
-.bingo:hover {
-    cursor:         default;
-    background:     #c0c0c0;
-    color:          #c0c0c0;
-    box-shadow:     2px 1px 2px #c0c0c0;
-    border:         2px solid #c0c0c0;
-}
-
-.bigmessage {
-    font-family: 'McLaren';
+.bigMsg, .smallMsg {
+    font-family:    'McLaren';
     text-shadow:    2px 1px 2px #111;
+    text-align:     center;
     color:          black;
-    font-size:      2.5em;
+}
+
+.bigMsg {
+    font-size:      4.0em;
+    line-height:    0.9em;
+    margin:         15px;
     animation-name: flashingBlack;
     animation-duration: 0.5s;
     animation-iteration-count: 6;

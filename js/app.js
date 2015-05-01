@@ -347,6 +347,7 @@ var setupGame = function () {
     });
     
     var $gameContainer = $("<div id='gameContainer'>");
+    $videoPlayer.append($("<p class='controlText'>Play as you watch this video:</p>"));
     $videoPlayer.append($iframe);
     $controls.append($videoPlayer);
     $gameContainer.append($controls);
@@ -355,16 +356,17 @@ var setupGame = function () {
     var $playGrid = $("<div id='playGrid'>");
     
     // Determine player's grid size selection
-    var numberOfBoxes = GameData.gridSize;
-    var cliches = randomPhrases(numberOfBoxes * numberOfBoxes);
+    var gridSize = GameData.gridSize;
+    var cliches = randomPhrases(gridSize * gridSize);
     var $row, $box; // Container row and child box variables
     // Create the grid based on the selection
-    for (var row = 0; row < numberOfBoxes; row++) {
+    for (var row = 0; row < gridSize; row++) {
         // Create a container div for each row
         $row = $("<div class='gridRow'>");
-        for (var col = 0; col < numberOfBoxes; col++) {
+        for (var col = 0; col < gridSize; col++) {
             // Create a box for each column
             $box = $("<div class='box' id='" + row + col + "'>");
+            // Add a cliche to each one
             $box.text(cliches.pop());
             // Attach box to current row
             $row.append($box);
@@ -401,26 +403,47 @@ var startGame = function () {
             }
             // Check if you have bingo
             if (isBingo(gameType, cSquares,gridSize)) {
-                console.log("BINGO!");
+                var $controls = $("#controls");
+                var $boxes, $box;
+                $controls.append("<p class='bigMsg'>BINGO!</p>");
+                $controls.append("<p class='smallMsg'>You have won! :)</p>");
                 switch (GameData.gameType) {
                     case '0':
-                        console.log("line(s) found!");
+                        var line;
+                        for (arr in GameData.lines) {
+                            if (GameData.lines[arr] && GameData.lines[arr].length) {
+                                line = GameData.lines[arr];
+                                var unflashLine = function(line){
+                                    for (index in line){
+                                        var $box = $("#" + line[index]);
+                                        $box.addClass("endGame")
+                                    }
+                                }
+ 
+                                var flashLine = function(line){
+                                    for (index in line){
+                                        $box = $("#" + line[index]);
+                                        $box.addClass("bingo")
+                                        setTimeout(unflashLine(line),2000);
+                                    }
+                                }
+                                setTimeout(flashLine(line),2000);
+                            }
+                        }
                         break;
                     case '1':
                         $boxes = $(".box");
                         $boxes.addClass("bingo");
-                        window.setTimeout(function(){
-                            var $playGrid = $("#playGrid");
-                            $playGrid.empty();
-                            var $msg = $("<p class='bigmessage'>FULL HOUSE!!</p>");
-                            $playGrid.append($msg);
-                            },2000);
-                        window.setTimeout(function(){
-                            var $msg = $(".bigmessage");
-                            $msg.addClass("faders");
-                        },3000);
                         break;
                 }
+                
+                setTimeout(function() {
+                    var $playGrid = $("#playGrid");
+                    var $controls = $("#controls");
+                    var $videoPlayer = $("#videoPlayer");
+                    $videoPlayer.remove();
+                    $playGrid.remove();
+                    $controls.css("float","none");},2000);
             } else {
                 console.log("GameData: ", GameData);
                 console.log("Bingo? Not yet!");
