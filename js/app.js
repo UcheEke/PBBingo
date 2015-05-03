@@ -27,17 +27,17 @@ var hasYouTube = function(url) {
 		return true;
 	}
 	return false;
-}
+}; // END hasYouTube()
 
 // Random phrases
-// Selects 16 unique phrases from the phrases list and returns a new list
+// Selects unique phrases (total=size) from the phrases list and returns a new list
 var randomPhrases = function(size) {
 	var phrases = [
 		"Let me be absolutely clear",
 		"There is no instant solution",
 		"It's going to take time",
 		"Hard working families",
-        "Cut our spending",
+    	"Cut our spending",
 		"Up and down the country",
 		"Long term economic plans",
 		"Economic mess",
@@ -60,11 +60,11 @@ var randomPhrases = function(size) {
 		"Our message is very clear and very simple",
 		"A whole range of proposals",
 		"The fact of the matter is",
-        "The politics of fear",
+	    "The politics of fear",
 		"If I can just make this point",
 		"The previous administration",
         "We'll turn the tide",
-        "A wasted vote",
+		"A wasted vote",
 		"Comprehensive raft of measures",
 		"There are no easy answers",
 		"Black hole in our finances",
@@ -75,7 +75,7 @@ var randomPhrases = function(size) {
 		"In any way, shape or form",
 		"Restore the nation's faith in politics",
 		"Get Britain working",
-        "Party in complete disarray",
+        	"Party in complete disarray",
 		"Protect the middle class",
 		"Cost of living crisis",
 		"The squeezed middle",
@@ -107,7 +107,7 @@ var randomPhrases = function(size) {
 		phrases.splice(index, 1);
 	}
 	return chosenPhrases;
-};
+}; // END randomPhrases()
 
 // isBingo
 // Returns true if Bingo condition has been achieved based upon the game type
@@ -126,12 +126,12 @@ var isBingo = function(gameType, list, size) {
 
 // hasLine(list, size)
 // Takes in a list of checked grid squares and the full grid side length, size.
-// Returns an array "result". result[0] is true if a line is found, result[1:]
+// Returns an array "result": result[0] is true if any line is found, result[1:]
 // contain arrays of the indices of checked grid squares that comprise each
-// winning line
+// winning line. These lines will be used in the final animation
 var hasLine = function(list, size) {
 	var result = [false];
-	// Ensure size is a number
+	// Make size a number
 	size = Number(size);
     
 	// Check the main diagonal:
@@ -143,29 +143,30 @@ var hasLine = function(list, size) {
 			diag.push(index);
 		}
 	}
-    if (diag.length === size) {
-        result.push(diag);
-        result[0] = true;
-    } else {
-        result.push([]);
-    }
+	if (diag.length === size) {
+	    result.push(diag);
+	    result[0] = true;
+	} else {
+	    result.push([]);
+	}
 
-    // Check the anti-diagonal:
-    aDiag = [];
+	// Check the anti-diagonal:
+	aDiag = [];
 	for (var i = 0, j = size - 1; i < size, j >= 0; i++, j--) {
 		index = j.toString() + i.toString();
 		if (list.indexOf(index) !== -1) {
 			aDiag.push(index);
 		}
 	}
-    if (aDiag.length === size) {
+	
+	if (aDiag.length === size) {
         result.push(aDiag);
         result[0] = true;
     } else {
         result.push([]);
     }
 
-    // Check the rows and cols
+	// Check the rows and cols
     var rowList = [0,0,0,0];
     var colList = [0,0,0,0];
     list.forEach(function(element){
@@ -202,7 +203,7 @@ var hasLine = function(list, size) {
         GameData.lines = [];
         return false;
     }
-};
+}; // END hasline
 
 // initialPage: Creates form in DOM for the various user defined game parameters
 var initialPage = function () {
@@ -226,11 +227,13 @@ var initialPage = function () {
 		'class': 'formField',
         'required' : true
     });
+    
     var $lblInputYT = $("<p>");
     $lblInputYT.attr({
         'id' : "lblInputYT",
         'class': "formText"
     });
+    
     $lblInputYT.text("YouTube Video:");
 
     var $formLine = $("<div class='formLine'>");
@@ -247,7 +250,6 @@ var initialPage = function () {
 		'class': 'formField',
 		'form':'page1Form'
 	});
-
 	$lblGameType.attr({
 		'id' : "lblGameType",
 		'class': "formText"
@@ -260,7 +262,6 @@ var initialPage = function () {
 		"'>"+ option +"</option>"));
 		count++;
 	});
-
 	$formLine = $("<div class='formLine'>");
 	$formLine.append($lblGameType);
 	$formLine.append($selGameType);
@@ -275,7 +276,6 @@ var initialPage = function () {
 		'class':'formField',
 		'form':'page1Form'
 	});
-
 	$lblGridSize.attr({
 		'id' : "lblGridSize",
 		'class': "formText"
@@ -288,7 +288,6 @@ var initialPage = function () {
 		"'>"+ option +"</option>"));
 		count++;
 	});
-
 	$formLine = $("<div class='formLine'>");
 	$formLine.append($lblGridSize);
 	$formLine.append($selGridSize);
@@ -303,28 +302,28 @@ var initialPage = function () {
 		'type' : 'submit',
 		'value': 'Play Game'
 	});
-
 	$formLine = $("<div class='formLine'>");
 	$formLine.append($btnSubmit);
 	$form.append($formLine);
 
     $main.append($container.append($form));
-
+	
+	// Button onClick eventHandler
 	$btnSubmit.click(function(evt){
 		if (hasYouTube($('#inputYT').val())) {
-			evt.preventDefault();
+			evt.preventDefault();  // Make sure no "submit" action actually takes place
 			GameData.gameType = ($selGameType.val() > '-1') ? $selGameType.val() : '0';
 			GameData.gridSize = ($selGridSize.val() > '2') ? $selGridSize.val() : '3';
             $main.hide();
             setupGame();
-		} else {
+		} else {  // Form validation check fails. Prompt user
 			$inputYT.css("border-color","red");
 			$lblInputYT.text("Please enter YouTube Video link:");
 			$lblInputYT.css("font-size", "1.2em");
 			return false;
 		}
 	});
-};
+}; // END initialPage()
 
 var setupGame = function () {
     var $main = $("main");
@@ -375,11 +374,12 @@ var setupGame = function () {
     $main.append($gameContainer);
     $main.show();
     startGame();
-};
+}; // END setupGame
 
+// startGame initiates gamePlay
 var startGame = function () {
     var $playGrid = $("#playGrid");
-    var cSquares = [];
+    var cSquares = [];	// list of clicked Squares in the grid
     var gameType = GameData.gameType;
     var gridSize = GameData.gridSize;
     var gameOver = false;
@@ -388,7 +388,7 @@ var startGame = function () {
         // Ensure that the event is a click
         if (e.type !== "click") return;
         
-        var t = e.target;
+        var t = e.target; // Specific box targeted in the click event
         if (t.className.indexOf("box") !== -1) {
             if (t.className.indexOf("clicked") === -1) {
                 t.className += " clicked";
@@ -434,12 +434,12 @@ var startGame = function () {
                         $boxes.addClass("bingo");
                         break;
                 }
-                // HACK: Set gridSize outside the range of possible results.
+                // HACK!!: Set gridSize outside the range of possible results.
                 gridSize *= 5;
             } 
         }
     });
-}
+} // END startGame()
 
 
 //
